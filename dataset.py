@@ -6,7 +6,7 @@ class Mahjong_discard(Dataset):
     def __init__(self, txt_folder):
         # 读取所有文本文件的路径
         self.file_paths = [os.path.join(txt_folder, fname) for fname in os.listdir(txt_folder) if fname.endswith('.txt')]
-        # 假设每个文本文件有相同数量的行
+        # 每个文本文件有相同数量的行
         self.samples_per_file = 10000
 
     def __len__(self):
@@ -23,7 +23,7 @@ class Mahjong_discard(Dataset):
             for i, line in enumerate(file):
                 if i == sample_idx:
                     # 解析样本数据
-                    data = line.strip().split(',')
+                    data = line.strip().split('$')
                     # 转换数据为所需的格式，例如转换为张量
                     data = torch.tensor([float(x) for x in data])
                     return data

@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs and checkpoints
+logs/
+checkpoints/
+
+# Data and model files (assumes data and models are stored elsewhere)
+data/
+models/
+
+# Virtual environments (if you use virtualenv)
+venv/
+env/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Mac OS and Linux system files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files (e.g., VS Code, PyCharm)
+.vscode/
+.idea/
+
+# PyTorch-specific files
+*.pth
+
+# Miscellaneous temporary files
+*.bak
+*.swp
+*~
+
+# Ignore configuration files if you're using different ones for different environments
+# .env (if you use environment variables)
+# .env.local (if you use environment variables)
+# .env.*.local (if you use environment variables)
+
+# Ignore user-specific configuration files
+# pytorch.yml (if you have user-specific PyTorch configuration)
+
+# Ignore .gitignore itself if it changes
+#!.gitignore
