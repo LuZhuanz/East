@@ -25,9 +25,9 @@ class Mahjong_discard(Dataset):
                 if i == sample_idx:
                     # 解析样本数据
                     data = line.split('$')
-                    label = data[]//4   #指示出哪一张牌
+                    label = data[1]//4   #指示出哪一张牌
                     feature_0 = data[2:]
-                    own = feature_0[0]
+                    
                     hai = np.array(feature_0[5][own])//4
                     meld = np.array(feature_0[])
                     

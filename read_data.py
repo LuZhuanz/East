@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import re
 import h5py
 import numpy as np
+from constant_test import *
 
 def get_txt_files(folder_path):
 
@@ -482,8 +483,7 @@ def flatten_record(record):
             
 # 使用示例
 if __name__ == "__main__":
-    folder_path = 'data/xml2017'  # 替换为您的文件夹路径
-    #folder_path = 'data/test'
+    
     txt_files = get_txt_files(folder_path)
     #print(txt_files)
     mahjong_iterator_test(txt_files)
