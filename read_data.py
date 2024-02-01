@@ -328,17 +328,17 @@ class mahjong_xml(object):
         score_own = score_copy[record_['own']]
         score_copy.remove(score_own)
         record = {
-            'discard': record_['discard'],
-            'round': record_['round'],   #局顺  1
-            'oya': record_['oya'],       #庄位  2
-            'DORA': record_['DORA'],     #宝牌  3
-            'hai_own': hai_own,          #自家手牌  4
-            'discard_own': discard_own,  #自家牌河  5
-            'discard_else': hai_discard_copy, #三家牌河  6
-            'meld_own': meld_own,        #自家副露  7
-            'meld': hai_meld_copy,       #三家副露  8
-            'score_own': score_own,      #自家得分  9
-            'score': score_copy          #三家得分  10
+            'discard': record_['discard'], #自家舍牌 label
+            'round': record_['round'],   #局顺  2
+            'oya': record_['oya'],       #庄位  3
+            'DORA': record_['DORA'],     #宝牌  4
+            'hai_own': hai_own,          #自家手牌  5
+            'discard_own': discard_own,  #自家牌河  6
+            'discard_else': hai_discard_copy, #三家牌河  7
+            'meld_own': meld_own,        #自家副露  8
+            'meld': hai_meld_copy,       #三家副露  9
+            'score_own': score_own,      #自家得分  10
+            'score': score_copy          #三家得分  11
         }
         #print('record',record)
         self.print_data(record)
