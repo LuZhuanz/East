@@ -313,29 +313,38 @@ class mahjong_xml(object):
         #self.record_agari(who,ten,yaku,m)
         
     def simp_1(self, record_):  #一种处理数据的函数，以后改数据就用这个模板，record_到record
+        print('record______',record_)
+        hai_discard_copy = record_['hai_discard'].copy()
+        hai_meld_copy = record_['hai_meld'].copy()
+        score_copy = record_['score'].copy()
+        
         hai_own = record_['hai'][record_['own']]
-        discard_own = record_['hai_discard'][record_['own']]
-        record_['hai_discard'].pop(record_['own'])
-        meld_own = record_['hai_meld'][record_['own']]
-        record_['hai_meld'].pop(record_['own'])   #目前是把场风自风这些东西先舍弃掉，后面再考虑怎么加入这些因素
-        score_own = record_['score'][record_['own']]
-        record_['score'].pop(record_['own'])
+        discard_own = hai_discard_copy[record_['own']]
+        print(discard_own)
+        hai_discard_copy.remove(discard_own)
+        print(record_['hai_discard'])
+        meld_own = hai_meld_copy[record_['own']]
+        hai_meld_copy.remove(meld_own)   #目前是把场风自风这些东西先舍弃掉，后面再考虑怎么加入这些因素
+        score_own = score_copy[record_['own']]
+        score_copy.remove(score_own)
         record = {
             'round': record_['round'],
             'oya': record_['oya'],
             'DORA': record_['DORA'],
             'hai_own': hai_own,
             'discard_own': discard_own,
-            'discard': record_['hai_discard'],
+            'discard': hai_discard_copy,
             'meld_own': meld_own,
-            'meld': record_['hai_meld'],
+            'meld': hai_meld_copy,
             'score_own': score_own,
-            'score': record_['score']
+            'score': score_copy
         }
+        print('record',record)
         self.print_data(record)
 
 
     def record_discard(self,num ,own):
+        hai,hai_discard,hai_meld,score = self.hai, self.hai_discard, self.hai_meld, self.score
         record_ = {
             'own':own,                           #自家位置
             'discard':num,                       #弃牌
@@ -344,10 +353,10 @@ class mahjong_xml(object):
             'dealer':self.dealer,                #供托
             'oya':self.oya,                      #庄位
             'DORA':self.DORA,                    #宝牌
-            'hai':self.hai,                      #手牌
-            'hai_discard':self.hai_discard,      #弃牌
-            'hai_meld':self.hai_meld,            #副露
-            'score':self.score                   #分数
+            'hai':hai,                      #手牌
+            'hai_discard':hai_discard,      #弃牌
+            'hai_meld':hai_meld,            #副露
+            'score':score                   #分数
         }
         record_['hai_meld'] = flatten_innermost(record_['hai_meld'])
         #可以更换为其他的函数来改变打印的输出
@@ -472,8 +481,8 @@ def flatten_record(record):
             
 # 使用示例
 if __name__ == "__main__":
-    folder_path = 'data/xml2017'  # 替换为您的文件夹路径
-    #folder_path = 'test'
+    #folder_path = 'data/xml2017'  # 替换为您的文件夹路径
+    folder_path = 'data/test'
     txt_files = get_txt_files(folder_path)
     #print(txt_files)
     mahjong_iterator_test(txt_files)
