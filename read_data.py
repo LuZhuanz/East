@@ -360,7 +360,7 @@ class mahjong_xml(object):
         if self.if_write:       
         #print(record)
             if self.line_count < self.line_count_max :
-                file_name = 'discard/discard_{}.txt'.format(self.file_count)
+                file_name = 'data/discard/discard_{}.txt'.format(self.file_count)
                 with open(file_name, 'a', encoding='utf-8') as file:
                     file.write(f'{self.line_count}$')
                     for key,value in record.items():
@@ -372,7 +372,7 @@ class mahjong_xml(object):
             else:
                 self.file_count = self.file_count + 1
                 self.line_count = 0
-                file_name = 'discard/discard_{}.txt'.format(self.file_count)
+                file_name = 'data/discard/discard_{}.txt'.format(self.file_count)
                 with open(file_name, 'w', encoding='utf-8') as file:
                     file.write(f'{self.line_count}$')
                     for key,value in record.items():
@@ -471,7 +471,7 @@ def flatten_record(record):
             
 # 使用示例
 if __name__ == "__main__":
-    folder_path = 'xml2017'  # 替换为您的文件夹路径
+    folder_path = 'data/xml2017'  # 替换为您的文件夹路径
     #folder_path = 'test'
     txt_files = get_txt_files(folder_path)
     #print(txt_files)
