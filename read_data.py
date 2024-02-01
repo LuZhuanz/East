@@ -313,33 +313,34 @@ class mahjong_xml(object):
         #self.record_agari(who,ten,yaku,m)
         
     def simp_1(self, record_):  #一种处理数据的函数，以后改数据就用这个模板，record_到record
-        print('record______',record_)
+        #print('record______',record_)
         hai_discard_copy = record_['hai_discard'].copy()
         hai_meld_copy = record_['hai_meld'].copy()
         score_copy = record_['score'].copy()
         
         hai_own = record_['hai'][record_['own']]
         discard_own = hai_discard_copy[record_['own']]
-        print(discard_own)
+        #print(discard_own)
         hai_discard_copy.remove(discard_own)
-        print(record_['hai_discard'])
+        #print(record_['hai_discard'])
         meld_own = hai_meld_copy[record_['own']]
         hai_meld_copy.remove(meld_own)   #目前是把场风自风这些东西先舍弃掉，后面再考虑怎么加入这些因素
         score_own = score_copy[record_['own']]
         score_copy.remove(score_own)
         record = {
-            'round': record_['round'],
-            'oya': record_['oya'],
-            'DORA': record_['DORA'],
-            'hai_own': hai_own,
-            'discard_own': discard_own,
-            'discard': hai_discard_copy,
-            'meld_own': meld_own,
-            'meld': hai_meld_copy,
-            'score_own': score_own,
-            'score': score_copy
+            'discard': record_['discard'],
+            'round': record_['round'],   #局顺  1
+            'oya': record_['oya'],       #庄位  2
+            'DORA': record_['DORA'],     #宝牌  3
+            'hai_own': hai_own,          #自家手牌  4
+            'discard_own': discard_own,  #自家牌河  5
+            'discard_else': hai_discard_copy, #三家牌河  6
+            'meld_own': meld_own,        #自家副露  7
+            'meld': hai_meld_copy,       #三家副露  8
+            'score_own': score_own,      #自家得分  9
+            'score': score_copy          #三家得分  10
         }
-        print('record',record)
+        #print('record',record)
         self.print_data(record)
 
 
