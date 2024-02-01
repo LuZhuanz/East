@@ -24,7 +24,7 @@ class Mahjong_discard(Dataset):
                 if i == sample_idx:
                     # 解析样本数据
                     data = line.strip().split('$')
-                    # 转换数据为所需的格式，例如转换为张量
+                    # 转换数据为，例如转换为张量
                     data = torch.tensor([float(x) for x in data])
                     return data
 
