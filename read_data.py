@@ -5,10 +5,7 @@ import h5py
 import numpy as np
 
 def get_txt_files(folder_path):
-    #print(folder_path)
-    #items = os.listdir(folder_path)
-    #print(items)
-    txt_files = []
+
     # 遍历指定文件夹
     for root, dirs, files in os.walk(folder_path):
         for file in files:
@@ -313,9 +310,32 @@ class mahjong_xml(object):
         m = elem.get('m')
         sc = elem.get('sc')
         #self.record_agari(who,ten,yaku,m)
+        
+    def simp_1(self, record_):  #一种处理数据的函数，以后改数据就用这个模板，record_到record
+        hai_own = record_['hai'][record_['own']]
+        discard_own = record_['discard'][record_['own']]
+        record_['discard'].pop(record_['own'])
+        meld_own = record_['hai_meld'][record_['own']]
+        record_['hai_meld'].pop(record_['own'])   #目前是把场风自风这些东西先舍弃掉，后面再考虑怎么加入这些因素
+        score_own = record_['score'][record_['own']]
+        record_['score'].pop(record_['own'])
+        record = {
+            'round': record_['round'],
+            'oya': record_['oya'],
+            'DORA': record_['DORA'],
+            'hai_own': hai_own,
+            'discard_own': discard_own,
+            'discard': record_['hai_discard'],
+            'meld_own': meld_own,
+            'meld': record_['hai_meld'],
+            'score_own': score_own,
+            'score': record_['score']
+        }
+        self.print_data(record)
+
 
     def record_discard(self,num ,own):
-        record = {
+        record_ = {
             'own':own,                           #自家位置
             'discard':num,                       #弃牌
             'round':self.round,                  #局顺
@@ -328,7 +348,15 @@ class mahjong_xml(object):
             'hai_meld':self.hai_meld,            #副露
             'score':self.score                   #分数
         }
+        record_['hai_meld'] = flatten_innermost(record_['hai_meld'])
+        #可以更换为其他的函数来改变打印的输出
+        self.simp_1(record_)
+        
+        
 
+        
+        
+    def print_data(self, record):
         if self.if_write:       
         #print(record)
             if self.line_count < self.line_count_max :
