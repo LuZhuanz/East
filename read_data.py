@@ -7,6 +7,7 @@ import numpy as np
 def get_txt_files(folder_path):
 
     # 遍历指定文件夹
+    txt_files = []
     for root, dirs, files in os.walk(folder_path):
         for file in files:
             # 检查文件是否为.txt文件
@@ -313,8 +314,8 @@ class mahjong_xml(object):
         
     def simp_1(self, record_):  #一种处理数据的函数，以后改数据就用这个模板，record_到record
         hai_own = record_['hai'][record_['own']]
-        discard_own = record_['discard'][record_['own']]
-        record_['discard'].pop(record_['own'])
+        discard_own = record_['hai_discard'][record_['own']]
+        record_['hai_discard'].pop(record_['own'])
         meld_own = record_['hai_meld'][record_['own']]
         record_['hai_meld'].pop(record_['own'])   #目前是把场风自风这些东西先舍弃掉，后面再考虑怎么加入这些因素
         score_own = record_['score'][record_['own']]
