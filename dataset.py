@@ -2,6 +2,7 @@ import torch
 from torch.utils.data import Dataset
 import os
 import numpy as np
+from constant_test import *
 
 def one_hot_mah(input):
     frequency = np.zeros(34, dtype=int)
@@ -92,3 +93,5 @@ dataset = Mahjong_discard(txt_folder='discard')
 
 # 创建 DataLoader
 from torch.utils.data import DataLoader
+
+dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
