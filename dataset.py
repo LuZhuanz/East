@@ -3,6 +3,33 @@ from torch.utils.data import Dataset
 import os
 import numpy as np
 
+def one_hot_mah(input):
+    frequency = np.zeros(34, dtype=int)
+    for i in range(0, 34):
+        frequency[i] = np.count_nonzero(input == i)
+    one_hot_matrix = np.zeros((4, 34), dtype=int)
+
+    for index, freq in enumerate(frequency):
+        if freq > 0:
+            one_hot_matrix[:freq, index] = 1
+            
+    return one_hot_matrix
+
+def one_hot_round(n):
+    one_hot_matrix = np.zeros((4,34),dtype=int)
+    for i in range(4*n,4*n+8):
+        one_hot_matrix[:,i] = 1
+        
+    return one_hot_matrix
+        
+def process_features(features, function=None):
+    """将特征数组转换为对应的处理后的形式，可选地应用一个转换函数（如独热编码）"""
+    processed = [np.array(feature)//4 for feature in features]
+    if function:
+        return [function(feature) for feature in processed]
+    return processed
+
+
 class Mahjong_discard(Dataset):
     def __init__(self, txt_folder):
         # 读取所有文本文件的路径
@@ -20,7 +47,7 @@ class Mahjong_discard(Dataset):
         sample_idx = idx % self.samples_per_file
 
         # 读取对应文件的特定行
-        with open(self.file_paths[file_idx], 'r') as file:
+        with open(self.file_paths[file_idx], 'r') as file:  #纯粹的cnn方法
             for i, line in enumerate(file):
                 if i == sample_idx:
                     # 解析样本数据
@@ -28,10 +55,36 @@ class Mahjong_discard(Dataset):
                     label = data[1]//4   #指示出哪一张牌
                     feature_0 = data[2:]
                     
-                    hai = np.array(feature_0[5][own])//4
-                    meld = np.array(feature_0[])
-                    
-                    
+                    features_to_process = [
+                        feature_0[3],  # hai_own
+                        feature_0[6],  # meld_own
+                        feature_0[7][0],  # meld_else_1
+                        feature_0[7][1],  # meld_else_2
+                        feature_0[7][2],  # meld_else_3
+                        feature_0[2],  # dora
+                        feature_0[4],  # discard_own
+                        feature_0[4][:-1], 
+                        feature_0[4][:-2],
+                        feature_0[4][:-3],
+                        feature_0[5][0],  # discard_1
+                        feature_0[5][0][:-1],
+                        feature_0[5][0][:-2],
+                        feature_0[5][0][:-3],  
+                        feature_0[5][1],  # discard_2
+                        feature_0[5][1][:-1],
+                        feature_0[5][1][:-2],
+                        feature_0[5][1][:-3],
+                        feature_0[5][2],  # discard_3
+                        feature_0[5][2][:-1],
+                        feature_0[5][2][:-2],
+                        feature_0[5][2][:-3],
+                        ]
+                    processed_features = process_features(features_to_process, one_hot_mah)
+                    round_ = one_hot_round(feature_0[0])
+                    processed_features.append(round_)
+                    combined_array = np.vstack(processed_features)
+                    feature = torch.tensor(combined_array, dtype=torch.float32)
+                                   
                     return feature, label
 
 # 使用自定义数据集
