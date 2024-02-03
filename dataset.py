@@ -1,9 +1,23 @@
 import torch
 from torch.utils.data import Dataset
+from torch.utils.data import DataLoader, random_split
 import os
 import numpy as np
 from constant_test import *
 from torchvision import datasets, transforms
+
+def data_loader():
+    train_ratio = 0.8
+    val_ratio = 0.2
+    dataset = Mahjong_discard(txt_folder='data/discard')
+    dataset_size = len(dataset)
+    train_size = int(train_ratio * dataset_size)
+    val_size = dataset_size - train_size
+    train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+    
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
+    return train_loader, val_loader
 
 def one_hot_mah(input):
     frequency = np.zeros(34, dtype=int)
@@ -89,13 +103,7 @@ class Mahjong_discard(Dataset):
                                    
                     return feature, label
 
-# 使用自定义数据集
-#dataset = Mahjong_discard(txt_folder='discard')
 
-# 创建 DataLoader
-from torch.utils.data import DataLoader
-
-#dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
 
 #for debug
