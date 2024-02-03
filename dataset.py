@@ -90,12 +90,12 @@ class Mahjong_discard(Dataset):
                     return feature, label
 
 # 使用自定义数据集
-dataset = Mahjong_discard(txt_folder='discard')
+#dataset = Mahjong_discard(txt_folder='discard')
 
 # 创建 DataLoader
 from torch.utils.data import DataLoader
 
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+#dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
 
 #for debug
