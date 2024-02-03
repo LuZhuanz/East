@@ -24,6 +24,6 @@ class logger:
         logging.info(f"Epoch {epoch+1}, Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%, Time: {spend}s")
         print(f"Epoch {epoch+1}, Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%, Time: {spend}s")
         
-    def logger_write_ckpt(save_path):
+    def logger_write_ckpt(self, save_path):
         logging.info(f"Model improved and saved to {save_path}")
         print(f"Model improved and saved to {save_path}")

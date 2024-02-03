@@ -8,7 +8,8 @@ import utils
 def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, epochs, device, save_path):
     model.to(device)
     best_val_loss = float('inf')
-    utils.logger.logger_init()
+    logger = utils.logger()
+    logger.logger_init()
 
     for epoch in range(epochs):
         model.train()
@@ -31,13 +32,13 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
             scheduler.step(avg_val_loss)
 
         # 日志记录
-        utils.logger.logger_write_train(epoch, avg_train_loss, avg_val_loss, val_accuracy)
+        logger.logger_write_train(epoch, avg_train_loss, avg_val_loss, val_accuracy)
 
         # 保存模型（如果在验证集上的表现更好）
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             torch.save(model.state_dict(), save_path)
-            utils.logger.logger_write_ckpt(save_path)
+            logger.logger_write_ckpt(save_path)
 
 def validate(model, val_loader, criterion, device):
     model.eval()

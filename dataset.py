@@ -107,6 +107,6 @@ transform = transforms.Compose([
 train_dataset_debug = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
 val_dataset_debug = datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
 
-train_loader_ = DataLoader(train_dataset_debug, batch_size=64, shuffle=True)
-val_loader_ = DataLoader(val_dataset_debug, batch_size=64, shuffle=False)
+train_loader_ = DataLoader(train_dataset_debug, batch_size=batch_size, shuffle=True)
+val_loader_ = DataLoader(val_dataset_debug, batch_size=batch_size, shuffle=False)
 
