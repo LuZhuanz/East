@@ -31,7 +31,7 @@ class ResNet18(nn.Module):
         return self.resnet(x)
     
 def initialize_model(num_classes):
-    model = SimpleCNN(num_classes=num_classes)
+    model = ResNet18(num_classes=num_classes)
     return model
 
 if __name__ == '__main__':

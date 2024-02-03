@@ -1,0 +1,7 @@
+2024-02-03 21:14:55,115 INFO Epoch 1, Train Loss: 0.5587, Val Loss: 0.4550, Val Accuracy: 84.36%
+2024-02-03 21:18:43,296 INFO Epoch 1, Train Loss: 0.5522, Val Loss: 0.4782, Val Accuracy: 84.43%
+2024-02-03 21:18:43,387 INFO Model improved and saved to checkpoints/model_debug.pth
+2024-02-03 21:22:05,187 INFO Epoch 2, Train Loss: 0.3210, Val Loss: 0.3501, Val Accuracy: 88.18%
+2024-02-03 21:22:05,284 INFO Model improved and saved to checkpoints/model_debug.pth
+2024-02-03 21:24:50,275 INFO Epoch 3, Train Loss: 0.2222, Val Loss: 0.3174, Val Accuracy: 89.78%
+2024-02-03 21:24:50,344 INFO Model improved and saved to checkpoints/model_debug.pth
