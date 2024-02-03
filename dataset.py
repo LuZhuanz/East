@@ -100,11 +100,12 @@ from torch.utils.data import DataLoader
 
 #for debug
 transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.5,), (0.5,))
-    ])
-train_dataset_debug = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-val_dataset_debug = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+    transforms.Resize((224, 224)),  # 将图像大小调整为224x224
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+])
+train_dataset_debug = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+val_dataset_debug = datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
 
 train_loader_ = DataLoader(train_dataset_debug, batch_size=64, shuffle=True)
 val_loader_ = DataLoader(val_dataset_debug, batch_size=64, shuffle=False)
