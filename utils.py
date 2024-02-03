@@ -11,8 +11,8 @@ class logger:
     def logger_init(self):
         self.time = time.time()
         # 创建 log 目录
-        if not os.path.exists('log'):
-            os.makedirs('log')
+        if not os.path.exists('logs'):
+            os.makedirs('logs')
 
         # 配置日志记录
         logging.basicConfig(filename='logs/training.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
