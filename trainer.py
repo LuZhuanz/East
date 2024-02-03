@@ -4,17 +4,19 @@ import torch.optim as optim
 import logging
 import os
 
-# 创建 log 目录（如果不存在的话）
-if not os.path.exists('log'):
-    os.makedirs('log')
+def logger():
+    # 创建 log 目录（如果不存在的话）
+    if not os.path.exists('log'):
+        os.makedirs('log')
 
-# 配置日志记录
-logging.basicConfig(filename='log/training.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+    # 配置日志记录
+    logging.basicConfig(filename='log/training.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, epochs, device='cpu', save_path='checkpoints/model.pth'):
+def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, epochs, device, save_path):
     model.to(device)
     best_val_loss = float('inf')
+    logger()
 
     for epoch in range(epochs):
         model.train()
@@ -33,7 +35,8 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
         avg_val_loss, val_accuracy = validate(model, val_loader, criterion, device)
 
         # 学习率调度
-        scheduler.step(avg_val_loss)
+        if scheduler is not None:
+            scheduler.step(avg_val_loss)
 
         # 日志记录
         logging.info(f"Epoch {epoch+1}, Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%")

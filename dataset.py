@@ -3,6 +3,7 @@ from torch.utils.data import Dataset
 import os
 import numpy as np
 from constant_test import *
+from torchvision import datasets, transforms
 
 def one_hot_mah(input):
     frequency = np.zeros(34, dtype=int)
@@ -24,7 +25,7 @@ def one_hot_round(n):
     return one_hot_matrix
         
 def process_features(features, function=None):
-    """将特征数组转换为对应的处理后的形式，可选地应用一个转换函数（如独热编码）"""
+    """将特征数组转换为对应的处理后的形式"""
     processed = [np.array(feature)//4 for feature in features]
     if function:
         return [function(feature) for feature in processed]
@@ -95,3 +96,16 @@ dataset = Mahjong_discard(txt_folder='discard')
 from torch.utils.data import DataLoader
 
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+
+
+#for debug
+transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,))
+    ])
+train_dataset_debug = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+val_dataset_debug = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+
+train_loader_ = DataLoader(train_dataset_debug, batch_size=64, shuffle=True)
+val_loader_ = DataLoader(val_dataset_debug, batch_size=64, shuffle=False)
+
