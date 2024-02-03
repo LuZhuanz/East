@@ -5,6 +5,7 @@ __pycache__/
 
 # Logs and checkpoints
 logs/
+log/
 checkpoints/
 
 # Data and model files (assumes data and models are stored elsewhere)

@@ -1,22 +1,14 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import logging
 import os
-
-def logger():
-    # 创建 log 目录（如果不存在的话）
-    if not os.path.exists('log'):
-        os.makedirs('log')
-
-    # 配置日志记录
-    logging.basicConfig(filename='log/training.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+import utils
 
 
 def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, epochs, device, save_path):
     model.to(device)
     best_val_loss = float('inf')
-    logger()
+    utils.logger.logger_init()
 
     for epoch in range(epochs):
         model.train()
@@ -39,13 +31,13 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
             scheduler.step(avg_val_loss)
 
         # 日志记录
-        logging.info(f"Epoch {epoch+1}, Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%")
+        utils.logger.logger_write_train(epoch, avg_train_loss, avg_val_loss, val_accuracy)
 
         # 保存模型（如果在验证集上的表现更好）
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             torch.save(model.state_dict(), save_path)
-            logging.info(f"Model improved and saved to {save_path}")
+            utils.logger.logger_write_ckpt(save_path)
 
 def validate(model, val_loader, criterion, device):
     model.eval()
