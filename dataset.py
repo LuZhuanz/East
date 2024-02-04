@@ -34,14 +34,16 @@ def one_hot_mah(input):
 
 def one_hot_round(n):
     one_hot_matrix = np.zeros((4,34),dtype=int)
-    for i in range(4*n,4*n+8):
-        one_hot_matrix[:,i] = 1
+    #print(n)
+    for i in range(2*n,2*n+4):
+        one_hot_matrix[:,i-1] = 1
         
     return one_hot_matrix
         
 def process_features(features, function=None):
     processed = []
     for feature in features:
+        #print(feature)
         # 首先，将字符串表示的列表转换为实际的列表
         if not isinstance(feature, list):
             feature = string_to_int_list(feature)
@@ -79,6 +81,8 @@ class Mahjong_discard(Dataset):
                     data = line.split('$')
                     label = int(data[1])//4   #指示出哪一张牌
                     feature_0 = data[2:]
+                    for i in [3, 6, 7, 2, 4, 5]:
+                        feature_0[i] = string_to_int_list(feature_0[i])
                     
                     features_to_process = [
                         feature_0[3],  # hai_own
@@ -105,10 +109,12 @@ class Mahjong_discard(Dataset):
                         feature_0[5][2][:-3],
                         ]
                     processed_features = process_features(features_to_process, one_hot_mah)
+                    feature_0[0] = int(feature_0[0])
                     round_ = one_hot_round(feature_0[0])
                     processed_features.append(round_)
                     combined_array = np.vstack(processed_features)
                     feature = torch.tensor(combined_array, dtype=torch.float32)
+                    print(feature)
 
                     return feature, label
 

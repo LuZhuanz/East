@@ -11,9 +11,9 @@ def initialize_model(num_classes):
 class ResNetBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size):
         super(ResNetBlock, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size, padding='same')
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size, padding=(0, 1))
         self.bn1 = nn.BatchNorm2d(out_channels)
-        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=kernel_size, padding='same')
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=kernel_size, padding=(0, 1))
         self.bn2 = nn.BatchNorm2d(out_channels)
 
     def forward(self, x):
@@ -27,14 +27,16 @@ class ResNetBlock(nn.Module):
 class East_cnn(nn.Module):
     def __init__(self):
         super(East_cnn, self).__init__()
-        self.conv1 = nn.Conv2d(1, 128, kernel_size=(1,3), padding='same')
+        self.conv1 = nn.Conv2d(1, 128, kernel_size=(1,3), padding=(0,1))
         self.res_blocks = nn.Sequential(*[ResNetBlock(128, 128, (1,3)) for _ in range(6)])
-        self.fc = nn.Linear(92*34*128, 34)
+        self.conv2 = nn.Conv2d(128,32,kernel_size=(1,3),padding=(0,1))
+        self.fc = nn.Linear(32*92*34, 34)
 
     def forward(self, x):
         x = x.unsqueeze(1)  # Add channel dimension
         x = F.relu(self.conv1(x))
         x = self.res_blocks(x)
+        x = F.relu(self.conv2(x))
         x = x.view(x.size(0), -1)  # Flatten
         x = self.fc(x)
         return x
