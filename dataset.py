@@ -40,7 +40,7 @@ def one_hot_round(n):
         
 def process_features(features, function=None):
     """将特征数组转换为对应的处理后的形式"""
-    processed = [np.array(feature)//4 for feature in features]
+    processed = [np.array(feature).astype(int)//4 for feature in features]
     if function:
         return [function(feature) for feature in processed]
     return processed
@@ -68,7 +68,7 @@ class Mahjong_discard(Dataset):
                 if i == sample_idx:
                     # 解析样本数据
                     data = line.split('$')
-                    label = data[1]//4   #指示出哪一张牌
+                    label = int(data[1])//4   #指示出哪一张牌
                     feature_0 = data[2:]
                     
                     features_to_process = [
@@ -100,7 +100,7 @@ class Mahjong_discard(Dataset):
                     processed_features.append(round_)
                     combined_array = np.vstack(processed_features)
                     feature = torch.tensor(combined_array, dtype=torch.float32)
-                                   
+
                     return feature, label
 
 
