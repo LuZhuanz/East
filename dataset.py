@@ -5,6 +5,7 @@ import os
 import numpy as np
 from constant_test import *
 from torchvision import datasets, transforms
+import ast
 
 def data_loader():
     train_ratio = 0.8
@@ -39,12 +40,20 @@ def one_hot_round(n):
     return one_hot_matrix
         
 def process_features(features, function=None):
-    """将特征数组转换为对应的处理后的形式"""
-    processed = [np.array(feature)//4 for feature in features]
-    if function:
-        return [function(feature) for feature in processed]
-    return processed
+    processed = []
+    for feature in features:
+        # 首先，将字符串表示的列表转换为实际的列表
+        if not isinstance(feature, list):
+            feature = string_to_int_list(feature)
+        # 然后，将列表中的每个元素转换为整数，并执行地板除
+        processed_feature = np.array(feature).astype(int) // 4
+        processed.append(processed_feature) 
+    return [function(feature) for feature in processed]
 
+
+def string_to_int_list(string):
+    # 使用ast.literal_eval安全地将字符串转换为列表
+    return ast.literal_eval(string)
 
 class Mahjong_discard(Dataset):
     def __init__(self, txt_folder):
