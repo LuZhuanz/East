@@ -6,7 +6,7 @@ import torch.optim as optim
 
 #dataloader
 #folder_path = 'data/xml2017'
-folder_path = 'data/test'
+folder_path = 'data/discard'
 batch_size = 64
 shuffle=True
 num_workers=4
@@ -14,8 +14,8 @@ num_workers=4
 
 #trainer
 scheduler = None
-epochs = 10
+epochs = 200
 criterion = nn.CrossEntropyLoss()
 
 
-save_path='checkpoints/model_debug.pth'
+save_path='checkpoints/model.pth'
