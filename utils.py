@@ -27,3 +27,6 @@ class logger:
     def logger_write_ckpt(self, save_path):
         logging.info(f"Model improved and saved to {save_path}")
         print(f"Model improved and saved to {save_path}")
+
+    def write(data):
+        logging.info(data)

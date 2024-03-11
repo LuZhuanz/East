@@ -123,7 +123,7 @@ class Mahjong_discard(Dataset):
 
 #for debug
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),  # 将图像大小调整为224x224
+    transforms.Resize((224, 224)),  
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
