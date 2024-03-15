@@ -6,6 +6,7 @@ import numpy as np
 from constant_test import *
 from torchvision import datasets, transforms
 import ast
+from tqdm import tqdm
 
 def data_loader():
     train_ratio = 0.8
@@ -16,8 +17,8 @@ def data_loader():
     val_size = dataset_size - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
     
-    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=False,num_workers=2)
+    val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False,num_workers=2)
     return train_loader, val_loader
 
 def one_hot_mah(input):
@@ -71,7 +72,9 @@ class Mahjong_discard(Dataset):
     def __getitem__(self, idx):
         # 确定文件索引和文件内的样本索引
         file_idx = idx // self.samples_per_file
+        print(file_idx)
         sample_idx = idx % self.samples_per_file
+        print(sample_idx)
 
         # 读取对应文件的特定行
         with open(self.file_paths[file_idx], 'r') as file:  #纯粹的cnn方法
@@ -114,7 +117,7 @@ class Mahjong_discard(Dataset):
                     processed_features.append(round_)
                     combined_array = np.vstack(processed_features)
                     feature = torch.tensor(combined_array, dtype=torch.float32)
-                    print(feature)
+                    #print(feature)
 
                     return feature, label
 
@@ -122,6 +125,7 @@ class Mahjong_discard(Dataset):
 
 
 #for debug
+                """
 transform = transforms.Compose([
     transforms.Resize((224, 224)),  
     transforms.ToTensor(),
@@ -130,6 +134,50 @@ transform = transforms.Compose([
 train_dataset_debug = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
 val_dataset_debug = datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
 
-train_loader_ = DataLoader(train_dataset_debug, batch_size=batch_size, shuffle=True)
+train_loader_ = DataLoader(train_dataset_debug, batch_size=batch_size, shuffle=False)
 val_loader_ = DataLoader(val_dataset_debug, batch_size=batch_size, shuffle=False)
 
+"""
+error_indices = []
+def check_dataloader_and_save_indices(dataloader):
+    for i, data in enumerate(dataloader):
+        try:
+            # 尝试处理数据，比如通过模型
+            outputs = data
+            print(f"Processing batch {i+1}/{len(dataloader)}")
+            #pass
+        except Exception as e:
+            print(f"Error processing batch {i+1}: {e}")
+            error_indices.append(i)  # 保存出错的索引
+    # 在迭代结束后保存出错的索引
+    save_error_indices(error_indices)
+
+def save_error_indices(indices):
+    with open('error_indices.txt', 'w') as f:
+        for index in indices:
+            f.write(f"{index}\n")
+    print("Saved error indices to 'error_indices.txt'.")
+
+def is_valid_format(input_data):
+    # 检查是否是元组
+    if not isinstance(input_data, tuple):
+        return False
+    # 检查元组长度
+    if len(input_data) != 2:
+        return False
+    # 检查第一个元素是否是torch.Tensor
+    if not isinstance(input_data[0], torch.Tensor):
+        return False
+    # 检查第二个元素是否是int
+    if not isinstance(input_data[1], int):
+        return False
+    return True
+"""
+dataloader, a = data_loader()
+#check_dataloader_and_save_indices(dataloader)
+Mahjong_discard = Mahjong_discard(txt_folder='data/discard')
+for i in tqdm(range(95220000)):
+    data = Mahjong_discard.__getitem__(i)
+    if is_valid_format(data) == False:
+        print(i, data)
+        """

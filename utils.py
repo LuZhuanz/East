@@ -29,4 +29,4 @@ class logger:
         print(f"Model improved and saved to {save_path}")
 
     def write(data):
-        logging.info(data)
+        logging.info(f"model:{data}")
